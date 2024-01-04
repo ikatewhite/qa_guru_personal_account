@@ -18,7 +18,7 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "7.0.4",
+def selenideVersion = "6.19.1",
     jUnitJupiterVersion = "5.10.1",
     allureSelenideVersion = "2.25.0",
     slf4jSimpleVersion = "2.0.10",
