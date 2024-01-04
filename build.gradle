@@ -1,0 +1,74 @@
+plugins {
+    id 'java-library'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'guru.qa'
+version = '1.0-SNAPSHOT'
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def selenideVersion = "7.0.4",
+    jUnitJupiterVersion = "5.10.1",
+    allureSelenideVersion = "2.25.0",
+    slf4jSimpleVersion = "2.0.10",
+    ownerVersion = "1.0.12",
+    javaFakerVersion = "1.0.2"
+
+dependencies {
+    testImplementation(
+            "com.codeborne:selenide:$selenideVersion",
+            "org.junit.jupiter:junit-jupiter:$jUnitJupiterVersion",
+            "io.qameta.allure:allure-selenide:$allureSelenideVersion",
+            "org.slf4j:slf4j-simple:$slf4jSimpleVersion",
+            "org.aeonbits.owner:owner:$ownerVersion",
+            "com.github.javafaker:javafaker:$javaFakerVersion")
+}
+
+allure {
+    report {
+        version.set(allureSelenideVersion)
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            junit5 {
+                adapterVersion.set(allureSelenideVersion)
+            }
+        }
+    }
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    systemProperties(System.getProperties())
+
+    testLogging {
+        lifecycle {
+            events "started", "passed", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
+
+tasks.register('positive_test', Test) {
+    useJUnitPlatform {
+        includeTags("positive")
+    }
+}
+
+tasks.register('negative_test', Test) {
+    useJUnitPlatform {
+        includeTags("negative")
+    }
+}
