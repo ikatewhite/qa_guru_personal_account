@@ -17,7 +17,7 @@ public interface WebConfig extends Config {
     String browserSize();
 
     @Key("baseUrl")
-    @DefaultValue("https://qa.guru")
+    @DefaultValue("https://qaguruschool.getcourse.ru")
     String baseUrl();
 
     @Key("remoteUrl")
